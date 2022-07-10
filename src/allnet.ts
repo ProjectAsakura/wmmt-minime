@@ -66,16 +66,14 @@ app.post("/sys/servlet/PowerOn", function(req, res) {
 
     const now = new Date();
     const adjusted = addHours(now, -hourDelta);
-    const isoStrWithMs = adjusted.toISOString();
-    const isoStr = isoStrWithMs.substr(0, 19) + "Z";
 
     const resParams = {
         stat: 1,
         uri: startupUri(req.body.game_id),
         host: startupHost(req.body.game_id),
         place_id: "123",
-        name: process.env.SHOP_NAME || "",
-        nickname: process.env.SHOP_NAME || "",
+        name: process.env.SHOP_NAME || "WMMT6",
+        nickname: process.env.SHOP_NAME || "WMMT6",
         region0: "1",
         region_name0: "W",
         region_name1: "X",
@@ -83,11 +81,15 @@ app.post("/sys/servlet/PowerOn", function(req, res) {
         region_name3: "Z",
         country: process.env.SHOP_REGION || "JPN",
         allnet_id: "456",
-        client_timezone: "+0900",
-
-        utc_time: isoStr,
+        timezone: "002:00",
         setting: "",
-        res_ver: "3",
+        year: adjusted.getFullYear(),
+        month: adjusted.getMonth() + 1, // I hate JS
+        day: adjusted.getDate(),
+        hour: adjusted.getHours(),
+        minute: adjusted.getMinutes(),
+        second: adjusted.getSeconds(),
+        res_class: "PowerOnResponseVer2",
         token: req.body.token,
     };
 
