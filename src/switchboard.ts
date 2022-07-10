@@ -19,6 +19,9 @@ export const PORT_BILLING = 8443;
 // Title services. These can be freely chosen.
 //
 
+export const PORT_WMMT = 9002;
+
+/*
 export const PORT_CHUNITHM = 9001;
 export const PORT_DIVA = 9000;
 export const PORT_IDZ = {
@@ -43,19 +46,18 @@ export const PORT_IDZ = {
     ECHO1: 10010,
     ECHO2: 10011,
 };
-
+*/
 //
 // Startup responses
 //
 
 const startupHosts = new Map<string, string>();
 
-startupHosts.set("SDDF", `${HOST_EXT}:${PORT_IDZ.USERDB.TCP}`);
+startupHosts.set("SBWJ", `${HOST_EXT}:${PORT_WMMT}`);
 
 const startupUris = new Map<string, string>();
 
-startupUris.set("SDBT", `http://${HOST_EXT}:${PORT_CHUNITHM}/`);
-startupUris.set("SBZV", `http://${HOST_EXT}:${PORT_DIVA}/`);
+startupUris.set("SBWJ", `https://${HOST_EXT}:${PORT_WMMT}`);
 
 export function startupHost(model: string): string {
     const val = startupHosts.get(model);

@@ -37,9 +37,7 @@ import * as Swb from "./switchboard";
         key: fs.readFileSync("pki/server.key"),
     };
 
-    console.log(
-        "DISCLAIMER: This fork of minime is ONLY designed to work with"
-    );
+    console.log("DISCLAIMER: This fork of minime is ONLY designed to work with");
     console.log("Wangan Midnight: Maximum Tune 6. Do not try connecting other");
     console.log("ALL.net enabled games to it, because they WILL NOT WORK.");
     console.log("Thank you.                         ~ Luna <3");
