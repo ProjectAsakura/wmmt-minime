@@ -22,26 +22,26 @@ export const PORT_BILLING = 8443;
 export const PORT_CHUNITHM = 9001;
 export const PORT_DIVA = 9000;
 export const PORT_IDZ = {
-  // Most of these seem to be unused relics
+    // Most of these seem to be unused relics
 
-  USERDB: {
-    TCP: 10000,
-    HTTP: 10001,
-  },
-  MATCH: {
-    TCP: 10002,
-    UDP_SEND: 10003,
-    UDP_RECV: 10004,
-  },
-  TAG_MATCH: {
-    TCP: 10005,
-    UDP_SEND: 10006,
-    UDP_RECV: 10007,
-  },
-  EVENT: 10008,
-  SCREENSHOT: 10009,
-  ECHO1: 10010,
-  ECHO2: 10011,
+    USERDB: {
+        TCP: 10000,
+        HTTP: 10001,
+    },
+    MATCH: {
+        TCP: 10002,
+        UDP_SEND: 10003,
+        UDP_RECV: 10004,
+    },
+    TAG_MATCH: {
+        TCP: 10005,
+        UDP_SEND: 10006,
+        UDP_RECV: 10007,
+    },
+    EVENT: 10008,
+    SCREENSHOT: 10009,
+    ECHO1: 10010,
+    ECHO2: 10011,
 };
 
 //
@@ -58,15 +58,15 @@ startupUris.set("SDBT", `http://${HOST_EXT}:${PORT_CHUNITHM}/`);
 startupUris.set("SBZV", `http://${HOST_EXT}:${PORT_DIVA}/`);
 
 export function startupHost(model: string): string {
-  const val = startupHosts.get(model);
+    const val = startupHosts.get(model);
 
-  return val !== undefined ? val : "";
+    return val !== undefined ? val : "";
 }
 
 export function startupUri(model: string): string {
-  const val = startupUris.get(model);
+    const val = startupUris.get(model);
 
-  return val !== undefined ? val : "";
+    return val !== undefined ? val : "";
 }
 
 //
@@ -77,7 +77,7 @@ debug("HOST_EXT: %s (Service host name sent to clients)", HOST_EXT);
 debug("HOST_INT: %s (Bind address)", HOST_INT);
 
 if (cfgHostExt === undefined || cfgHostInt === undefined) {
-  debug(
-    "Using default host names, change them from the .env file if necessary."
-  );
+    debug(
+        "Using default host names, change them from the .env file if necessary."
+    );
 }

@@ -3,21 +3,21 @@ import snakeCase from "snake-case";
 import { Row } from "./api";
 
 interface ColMapper<F> {
-  _read(str: string | null): F;
+    _read(str: string | null): F;
 
-  _write(val: F): string | null;
+    _write(val: F): string | null;
 }
 
 type Spec<R> = {
-  [K in keyof R]: ColMapper<R[K]>;
+    [K in keyof R]: ColMapper<R[K]>;
 };
 
 function _nn(str: string | null): string {
-  if (str === null) {
-    throw new Error("Unexpected NULL returned from database");
-  }
+    if (str === null) {
+        throw new Error("Unexpected NULL returned from database");
+    }
 
-  return str;
+    return str;
 }
 
 /**
@@ -27,32 +27,32 @@ function _nn(str: string | null): string {
  * pushed down into `/sql/api.ts` somehow...
  */
 export const T = {
-  bigint: {
-    _read: (str: string) => BigInt(_nn(str)),
-    _write: (val: bigint) => val.toString(),
-  },
-  boolean: {
-    _read: (str: string) => _nn(str) === "true",
-    _write: (val: boolean) => val.toString(),
-  },
-  number: {
-    _read: (str: string) => parseInt(_nn(str)),
-    _write: (val: number) => val.toString(),
-  },
-  string: {
-    _read: (str: string) => _nn(str),
-    _write: (val: string) => val,
-  },
-  Date: {
-    _read: (str: string) => new Date(_nn(str)),
-    _write: (val: Date) => val.toISOString(),
-  },
-  nullable: <F>(inner: ColMapper<F>) => ({
-    _read: (str: string | null) =>
-      str !== null ? inner._read(str) : undefined,
-    _write: (val: F | undefined) =>
-      val !== undefined ? inner._write(val) : null,
-  }),
+    bigint: {
+        _read: (str: string) => BigInt(_nn(str)),
+        _write: (val: bigint) => val.toString(),
+    },
+    boolean: {
+        _read: (str: string) => _nn(str) === "true",
+        _write: (val: boolean) => val.toString(),
+    },
+    number: {
+        _read: (str: string) => parseInt(_nn(str)),
+        _write: (val: number) => val.toString(),
+    },
+    string: {
+        _read: (str: string) => _nn(str),
+        _write: (val: string) => val,
+    },
+    Date: {
+        _read: (str: string) => new Date(_nn(str)),
+        _write: (val: Date) => val.toISOString(),
+    },
+    nullable: <F>(inner: ColMapper<F>) => ({
+        _read: (str: string | null) =>
+            str !== null ? inner._read(str) : undefined,
+        _write: (val: F | undefined) =>
+            val !== undefined ? inner._write(val) : null,
+    }),
 };
 
 /**
@@ -60,41 +60,41 @@ export const T = {
  * compiler will ensure that the mapping is correct.
  */
 export function createSqlMapper<R>(spec: Spec<R>) {
-  const snaked = new Map<string, string>();
-  const colNames = new Array<string>();
-
-  for (const k in spec) {
-    const sk = snakeCase(k);
-
-    snaked.set(k, sk);
-    colNames.push(sk);
-  }
-
-  function readRow(row: Row): R {
-    const result = {} as R;
+    const snaked = new Map<string, string>();
+    const colNames = new Array<string>();
 
     for (const k in spec) {
-      const sk = snaked.get(k);
-      const v = spec[k]._read(row[sk!]);
+        const sk = snakeCase(k);
 
-      result[k] = v;
+        snaked.set(k, sk);
+        colNames.push(sk);
     }
 
-    return result;
-  }
+    function readRow(row: Row): R {
+        const result = {} as R;
 
-  function writeRow(obj: R): Row {
-    const result = {};
+        for (const k in spec) {
+            const sk = snaked.get(k);
+            const v = spec[k]._read(row[sk!]);
 
-    for (const k in spec) {
-      const sk = snaked.get(k);
-      const v = spec[k]._write(obj[k]);
+            result[k] = v;
+        }
 
-      result[sk!] = v;
+        return result;
     }
 
-    return result;
-  }
+    function writeRow(obj: R): Row {
+        const result = {};
 
-  return { readRow, writeRow, colNames };
+        for (const k in spec) {
+            const sk = snaked.get(k);
+            const v = spec[k]._write(obj[k]);
+
+            result[sk!] = v;
+        }
+
+        return result;
+    }
+
+    return { readRow, writeRow, colNames };
 }

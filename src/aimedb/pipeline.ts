@@ -13,31 +13,31 @@ const K = Buffer.from("Copyright(C)SEGA", "utf8");
 const pipeline = promisify(stream.pipeline);
 
 export interface Session {
-  input: AsyncIterable<AimeRequest>;
-  output: {
-    write(res: AimeResponse): void;
-  };
+    input: AsyncIterable<AimeRequest>;
+    output: {
+        write(res: AimeResponse): void;
+    };
 }
 
 function doNothing() {}
 
 export function setup(socket: Socket): Session {
-  const input = new Decoder();
+    const input = new Decoder();
 
-  pipeline(
-    socket,
-    createDecipheriv("aes-128-ecb", K, null).setAutoPadding(false),
-    new Deframer({}),
-    input
-  ).catch(doNothing);
+    pipeline(
+        socket,
+        createDecipheriv("aes-128-ecb", K, null).setAutoPadding(false),
+        new Deframer({}),
+        input
+    ).catch(doNothing);
 
-  const output = new Encoder();
+    const output = new Encoder();
 
-  pipeline(
-    output,
-    createCipheriv("aes-128-ecb", K, null).setAutoPadding(false),
-    socket
-  ).catch(doNothing);
+    pipeline(
+        output,
+        createCipheriv("aes-128-ecb", K, null).setAutoPadding(false),
+        socket
+    ).catch(doNothing);
 
-  return { input, output };
+    return { input, output };
 }

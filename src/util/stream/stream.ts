@@ -5,37 +5,37 @@ import { ByteStream } from "./types";
 import makeWriter from "./writer";
 
 export default class IoByteStream implements ByteStream {
-  private _stm?: Duplex;
-  private readonly _read: (nbytes: number) => Promise<Buffer>;
-  private readonly _write: (buf: Buffer) => Promise<void>;
+    private _stm?: Duplex;
+    private readonly _read: (nbytes: number) => Promise<Buffer>;
+    private readonly _write: (buf: Buffer) => Promise<void>;
 
-  constructor(stm: Duplex) {
-    this._stm = stm;
-    this._read = makeReader(stm);
-    this._write = makeWriter(stm);
-  }
-
-  close() {
-    if (this._stm !== undefined) {
-      this._stm.destroy();
+    constructor(stm: Duplex) {
+        this._stm = stm;
+        this._read = makeReader(stm);
+        this._write = makeWriter(stm);
     }
 
-    this._stm = undefined;
-  }
+    close() {
+        if (this._stm !== undefined) {
+            this._stm.destroy();
+        }
 
-  read(nbytes: number): Promise<Buffer> {
-    if (this._stm === undefined) {
-      throw new Error("Stream is closed");
+        this._stm = undefined;
     }
 
-    return this._read(nbytes);
-  }
+    read(nbytes: number): Promise<Buffer> {
+        if (this._stm === undefined) {
+            throw new Error("Stream is closed");
+        }
 
-  write(buf: Buffer): Promise<void> {
-    if (this._stm === undefined) {
-      throw new Error("Stream is closed");
+        return this._read(nbytes);
     }
 
-    return this._write(buf);
-  }
+    write(buf: Buffer): Promise<void> {
+        if (this._stm === undefined) {
+            throw new Error("Stream is closed");
+        }
+
+        return this._write(buf);
+    }
 }

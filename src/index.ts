@@ -20,33 +20,35 @@ import { openSqlite } from "./sql";
 import * as Swb from "./switchboard";
 
 (async function() {
-  fs.mkdirSync("./data", { recursive: true });
+    fs.mkdirSync("./data", { recursive: true });
 
-  const db = openSqlite("./data/db.sqlite3");
+    const db = openSqlite("./data/db.sqlite3");
 
-  try {
-    await checkdb(db);
-  } catch (e) {
-    console.error(e);
+    try {
+        await checkdb(db);
+    } catch (e) {
+        console.error(e);
 
-    return;
-  }
+        return;
+    }
 
-  const tls = {
-    cert: fs.readFileSync("pki/server.pem"),
-    key: fs.readFileSync("pki/server.key"),
-  };
+    const tls = {
+        cert: fs.readFileSync("pki/server.pem"),
+        key: fs.readFileSync("pki/server.key"),
+    };
 
-  console.log('DISCLAIMER: This fork of minime is ONLY designed to work with');
-  console.log('Wangan Midnight: Maximum Tune 6. Do not try connecting other');
-  console.log('ALL.net enabled games to it, because they WILL NOT WORK.');
-  console.log('Thank you.                         ~ Luna <3');
+    console.log(
+        "DISCLAIMER: This fork of minime is ONLY designed to work with"
+    );
+    console.log("Wangan Midnight: Maximum Tune 6. Do not try connecting other");
+    console.log("ALL.net enabled games to it, because they WILL NOT WORK.");
+    console.log("Thank you.                         ~ Luna <3");
 
-  net.createServer(aimedb(db)).listen(Swb.PORT_AIMEDB, Swb.HOST_INT);
-  http.createServer(allnet).listen(Swb.PORT_ALLNET, Swb.HOST_INT);
-  https.createServer(tls, billing).listen(Swb.PORT_BILLING, Swb.HOST_INT);
+    net.createServer(aimedb(db)).listen(Swb.PORT_AIMEDB, Swb.HOST_INT);
+    http.createServer(allnet).listen(Swb.PORT_ALLNET, Swb.HOST_INT);
+    https.createServer(tls, billing).listen(Swb.PORT_BILLING, Swb.HOST_INT);
 
-  /*
+    /*
   http.createServer(chunithm(db)).listen(Swb.PORT_CHUNITHM, Swb.HOST_INT);
   http.createServer(diva).listen(Swb.PORT_DIVA, Swb.HOST_INT);
 
@@ -59,5 +61,5 @@ import * as Swb from "./switchboard";
   idzPing(Swb.PORT_IDZ.ECHO2, Swb.HOST_INT);
   */
 
-  console.log("Startup OK");
+    console.log("Startup OK");
 })();
