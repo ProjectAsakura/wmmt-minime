@@ -71,7 +71,7 @@ app.post("/sys/servlet/PowerOn", function(req, res) {
         stat: 1,
         uri: startupUri(req.body.game_id),
         host: startupHost(req.body.game_id),
-        place_id: "123",
+        place_id: "JPN0123",
         name: process.env.SHOP_NAME || "WMMT6",
         nickname: process.env.SHOP_NAME || "WMMT6",
         region0: "1",
