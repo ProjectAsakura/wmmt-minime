@@ -53,11 +53,11 @@ export const PORT_IDZ = {
 
 const startupHosts = new Map<string, string>();
 
-startupHosts.set("SBWJ", `${HOST_EXT}:${PORT_WMMT}`);
+startupHosts.set("SBWJ", `localhost:${PORT_WMMT}`);
 
 const startupUris = new Map<string, string>();
 
-startupUris.set("SBWJ", `https://${HOST_EXT}:${PORT_WMMT}`);
+startupUris.set("SBWJ", `https://localhost:${PORT_WMMT}`);
 
 export function startupHost(model: string): string {
     const val = startupHosts.get(model);
